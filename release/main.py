@@ -11,6 +11,7 @@ import sqlite3
 import UI.add_ui
 import UI.main_ui
 
+dbPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'coffee.sqlite')
 
 class AddWidget(QMainWindow):
     def __init__(self):
@@ -19,7 +20,7 @@ class AddWidget(QMainWindow):
         self.pushButton.clicked.connect(self.act)
 
     def act(self):
-        conn = sqlite3.connect(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'coffee.sqlite'))
+        conn = sqlite3.connect(dbPath)
         cursor = conn.cursor()
 
         query = '''INSERT INTO table_for_coffee (class_name, step_objarki, ground_in_grains,
@@ -41,7 +42,7 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi(io.StringIO(UI.main_ui.getUi()), self)
 
-        connection = sqlite3.connect(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'coffee.sqlite'))
+        connection = sqlite3.connect(dbPath)
         cursor = connection.cursor()
 
         query = '''SELECT * FROM table_for_coffee'''
@@ -84,7 +85,7 @@ class MyWidget(QMainWindow):
         column = item.column()
         value = item.text()
 
-        connection = sqlite3.connect(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'coffee.sqlite'))
+        connection = sqlite3.connect(dbPath)
         cursor = connection.cursor()
         if column == 1:
             cursor.execute("UPDATE table_for_coffee SET class_name = ? WHERE ID = ?",
